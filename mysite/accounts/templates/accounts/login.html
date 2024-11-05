@@ -1,0 +1,13 @@
+{% extends "accounts/layout.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form class="form" method="post">
+        {% crispy form %}
+        <div class="form-actions">
+            <input class="" id="submit" type="submit" value="Login">
+            <a href="{% url 'accounts:register' %}">Don't have an Account, Register</a>
+        </div>
+    </form>
+{% endblock %}

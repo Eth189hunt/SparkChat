@@ -1,0 +1,7 @@
+docker-compose.yml
+Dockerfile
+.dockerignore
+*.code-workspace
+*env*
+*.vscode
+start.sh

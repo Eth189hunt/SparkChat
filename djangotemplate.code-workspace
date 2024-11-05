@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "/Users/ethanhunt1/Documents/Django/MyProjects/langplanet/env/bin/python",
+		"editor.defaultFormatter": "ms-python.black-formatter",
+		"editor.formatOnSave": true,
+		"python.formatting.provider": "black",
+		"python.formatting.blackArgs": [
+			"--line-length=99"
+		],
+		"isort.args": [
+			"--profile",
+			"black"
+		],
+		"[python]": {
+			"editor.codeActionsOnSave": {
+				"source.organizeImports": "explicit"
+			},
+			"editor.rulers": [88]
+		},
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": []
+	}
+}

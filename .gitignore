@@ -1,0 +1,16 @@
+__pycache__
+!package.json
+.vscode/settings.json
+.DS_Store
+*.csv
+*.log
+*.pyc
+*.swp
+node_modules/
+yarn-error.log
+id_rsa*
+.idea*
+.env*
+*.vscode
+
+build

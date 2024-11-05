@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+        <!-- Favicons -->
+        <link rel="icon" href="/static/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static '/imgs/langplanet_logo-16.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static '/imgs/langplanet_logo-32.png' %}">
+        <link href="{% static '/imgs/langplanet_logo-128.ico' %}" rel="icon">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static '/imgs/langplanet_app_icon.png' %}">
+        
+        <title>Django Template</title>
+        <meta content="" name="descriptison">
+
+        <!-- Bootstrap Load -->
+        <link href="{% static '/node_modules/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- Main CSS Styles -->
+        <!-- <link href="{% static 'css/main.css' %}" rel="stylesheet"> -->
+        
+        <!-- Head block -->
+        {% block head %}
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block body %}
+        {% endblock %}
+        <footer>
+            <!-- jQuery -->
+            <script type="text/javascript" src="{% static '/node_modules/jquery/dist/jquery.js' %}"></script>
+
+            <!-- Popper js -->
+            <script src="{% static '/node_modules/@popperjs/core/dist/umd/popper.min.js' %}"></script>
+
+            <!-- Bootstrap js -->
+            <script src="{% static '/node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+
+            <!-- Script block -->
+            {% block script %}
+            {% endblock %}
+        </footer>
+    </body>
+</html>
