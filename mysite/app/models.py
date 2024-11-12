@@ -7,6 +7,7 @@ class Server(models.Model):
         User, related_name="server_owner", on_delete=models.CASCADE
     )
     members = models.ManyToManyField(User, related_name="server_members")
+    name = models.CharField(max_length=255)
     icon = models.FileField()
     created_at = models.DateTimeField(auto_created=True)
 
