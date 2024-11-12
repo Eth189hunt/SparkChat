@@ -5,9 +5,11 @@
 {% endblock head %}
     
 {% block body %}
-    <div class="content">
-        Hi
-        {% block content %}
-        {% endblock content %}
+    <div class="row">
+        {% include 'app/serverlist.html' %}
+        <div class="col-8 content">
+            {% block content %}
+            {% endblock content %}
+        </div>
     </div>
 {% endblock %}
