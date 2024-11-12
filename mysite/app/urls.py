@@ -12,4 +12,5 @@ urlpatterns = [
         views.ServerDetailView.as_view(),
         name="server-detail",
     ),
+    path("n/", views.MessageView.as_view(), name="message"),
 ]

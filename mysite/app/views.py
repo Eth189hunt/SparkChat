@@ -55,3 +55,15 @@ class ServerDetailView(LoginRequiredMixin, SeversMixin, DetailView):
         context["role_form"] = forms.RoleForm()
         context["server_members_form"] = forms.ServerMembersForm()
         return context
+
+
+class MessageView(TemplateView):
+    template_name = "app/message.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["message"] = {
+            "content": "BLAH, asdlkfjasdfkjasdfljasdf;lkjasdfjkasdf;jasdf;jkasdf;jkasdf;lkjasdf;lkj"
+        }
+
+        return context
