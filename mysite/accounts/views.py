@@ -30,13 +30,21 @@ class RegisterUser(CreateView):
 class LoginUser(LoginView):
     form_class = forms.LoginForm
     template_name = "accounts/login.html"
-    next_page = reverse_lazy("app:dashboard")
+    next_page = reverse_lazy("app:index")
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse_lazy("app:dashboard"))
+            return HttpResponseRedirect(reverse_lazy("app:index"))
         return super().get(request, *args, **kwargs)
 
 
 class LogoutUser(LogoutView):
-    next_page = reverse_lazy("accounts:index")
+    next_page = reverse_lazy("accounts:login")
+
+
+class ProfileView(TemplateView):
+    template_name = "accounts/user_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
