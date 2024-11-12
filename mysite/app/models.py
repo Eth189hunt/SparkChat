@@ -9,7 +9,7 @@ class Server(models.Model):
     members = models.ManyToManyField(User, related_name="server_members")
     name = models.CharField(max_length=255)
     icon = models.FileField()
-    created_at = models.DateTimeField(auto_created=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Channel(models.Model):
@@ -25,7 +25,7 @@ class Message(models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(max_length=2000)
-    created_at = models.DateTimeField(auto_created=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class DirectMessageChannel(Channel):
@@ -74,4 +74,4 @@ class FriendRequest(models.Model):
         User, related_name="friendrquest_to_user", on_delete=models.CASCADE
     )
     accepted = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_created=True)
+    created_at = models.DateTimeField(auto_now_add=True)

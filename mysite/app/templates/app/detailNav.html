@@ -1,0 +1,21 @@
+<div class="col-auto">
+    <div class="d-flex flex-column vh-100">
+
+        {% if current_server %}
+            
+        {% else %}
+            <div class="d-flex justify-content-center">
+                <a href="" class="">Friends</a>
+            </div>
+        {% endif %}
+            
+        <div class="user-info mt-auto">
+            <div class="d-flex align-items-center">
+                <!-- <img src="https://cdn.discordapp.com/avatars/123456789012345678/abcdef123456789012345678abcdef12.png" alt="User Avatar" class="avatar" style="width: 3rem; height: 3rem;"> -->
+                <a href="{% url 'accounts:profile' %}" class="ml-2">
+                    <div class="username">{{user.username}}</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
