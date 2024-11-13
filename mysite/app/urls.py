@@ -12,5 +12,30 @@ urlpatterns = [
         views.ServerDetailView.as_view(),
         name="server-detail",
     ),
-    path("n/", views.MessageView.as_view(), name="message"),
+    path(
+        "server/<int:server_pk>/channel/create/",
+        views.CreateTextChannelView.as_view(),
+        name="channel-create",
+    ),
+    path(
+        "server/<int:server_pk>/channel/<int:textchannel_pk>/",
+        views.TextChannelMessageCreateView.as_view(),
+        name="channel-detail",
+    ),
+    path("requests/", views.FriendRequestListView.as_view(), name="friend-requests"),
+    path(
+        "requests/create/",
+        views.FriendRequestCreateView.as_view(),
+        name="friend-request-create",
+    ),
+    path(
+        "requests/<int:request_pk>/",
+        views.FriendRequestUpdateView.as_view(),
+        name="friend-request-update",
+    ),
+    path(
+        "direct/<int:user_pk>/",
+        views.DirectMessageCreateView.as_view(),
+        name="direct-message",
+    ),
 ]

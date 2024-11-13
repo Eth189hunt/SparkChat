@@ -1,0 +1,23 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="header row">
+    <div class="col-auto">Friends</div>
+    <div class="col-auto"><a href="{% url 'app:index' %}">All</a></div>
+    <div class="col-auto"><a href="{% url 'app:friend-requests' %}" class="active">Pending</a></div>
+    <div class="col-auto"><a href="{% url 'app:friend-request-create' %}" class="btn btn-success">Add Friend</a></div>
+</div>
+{% include 'app/includes/messages.html' %}
+<div class="container">
+    <h4>Accepct Friend Request</h4>
+    <form class="form" method="post" enctype="multipart/form-data">
+        {% crispy form %}
+        <div class="form-actions">
+            <input class="btn btn-primary" id="submit" type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+{% endblock %}

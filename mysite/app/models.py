@@ -24,8 +24,11 @@ class Message(models.Model):
         abstract = True
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(max_length=2000)
+    content = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def created_at_str(self):
+        return self.created_at.strftime("%b %d %Y at %H:%M")
 
 
 class DirectMessageChannel(Channel):
@@ -35,6 +38,9 @@ class DirectMessageChannel(Channel):
     user2 = models.ForeignKey(
         User, related_name="directmessage_user2", on_delete=models.CASCADE
     )
+
+    def name(self):
+        return f"{self.user1.username}, {self.user2.username}"
 
 
 class DirectMessage(Message):
@@ -58,6 +64,7 @@ class TextChannelMessage(Message):
 class Role(models.Model):
     server = models.ForeignKey(Server, on_delete=models.CASCADE)
     members = models.ManyToManyField(User, related_name="role_members")
+    default_role = models.BooleanField(default=False)
     permission_server_edit = models.BooleanField(default=False)
     roles_edit = models.BooleanField(default=False)
     roles_member_manage = models.BooleanField(default=False)
@@ -75,3 +82,6 @@ class FriendRequest(models.Model):
     )
     accepted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def created_at_str(self):
+        return self.created_at.strftime("%b %d %Y")

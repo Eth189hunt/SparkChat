@@ -2,10 +2,23 @@
     <div class="d-flex flex-column vh-100">
 
         {% if current_server %}
-            
+            <div class="d-flex flex-column justify-content-center">
+                <a href="{% url 'app:server-detail' current_server.id %}" class="">{{ current_server.name }}</a>
+                <a href="{% url 'app:channel-create' current_server.id %}" class="">Add Text Chat</a>
+
+                {% for channel in current_server.textchannel_set.all %}
+                    <a href="{% url 'app:channel-detail' current_server.id channel.id %}">{{ channel.name }}</a>
+                {% endfor %}
+                
+            </div>
         {% else %}
-            <div class="d-flex justify-content-center">
-                <a href="" class="">Friends</a>
+            <div class="d-flex flex-column justify-content-center">
+                <a href="{% url 'app:index' %}" class="">Friends</a>
+                
+                {% for channel in channels %}
+                    <a href="{% url 'app:direct-message' channel.other_user.id %}">{{ channel.name }}</a>
+                {% endfor %}
+                    
             </div>
         {% endif %}
             

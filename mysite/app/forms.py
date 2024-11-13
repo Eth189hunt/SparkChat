@@ -48,10 +48,58 @@ class RoleForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
+class DirectMessageCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.DirectMessage
+        fields = ["content"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["content"].label = ""
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
 class TextChannelMessageForm(forms.ModelForm):
     class Meta:
         model = models.TextChannelMessage
         fields = ["content"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["content"].label = ""
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class TextChannelCreateForm(forms.ModelForm):
+    class Meta:
+        model = models.TextChannel
+        fields = ["name"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class FriendRequestCreateForm(forms.Form):
+    to_user = forms.CharField(
+        max_length=255,
+        label="Friend Username",
+        help_text="Enter the username of the user you want to friend.",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
+class FriendRequestUpdateForm(forms.ModelForm):
+    class Meta:
+        model = models.FriendRequest
+        fields = ["accepted"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

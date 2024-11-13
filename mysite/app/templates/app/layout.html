@@ -5,10 +5,10 @@
 {% endblock head %}
     
 {% block body %}
-    <div class="row">
+    <div class="row w-100">
         {% include 'app/serverlist.html' %}
         {% include 'app/detailNav.html' %}
-        <div class="col-auto content">
+        <div class="col content">
             {% block content %}
             {% endblock content %}
         </div>

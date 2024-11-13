@@ -4,5 +4,6 @@
 
 {% block content %}
     <h4>Edit User Profile</h4>
+    <a href="{% url 'app:index' %}">Back</a>
     <a href="{% url 'accounts:logout' %}" class="btn btn-danger">Logout</a>
 {% endblock %}
