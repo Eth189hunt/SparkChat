@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 
 
 class RegisterForm(UserCreationForm):
-    terms = forms.BooleanField(required=True)
     age = forms.BooleanField(required=True, label="I am older then 13.")
 
     class Meta:
