@@ -76,6 +76,13 @@ class ServerDetailView(SeversMixin, DetailView):
         return context
 
 
+class ServerSettings(SeversMixin, UpdateView):
+    model = models.Server
+    form_class = forms.ServerSettingsForm
+    template_name = "app/serverSettings.html"
+    pk_url_kwarg = "server_pk"
+
+
 class ServerMembersUpdateView(SeversMixin, UpdateView):
     model = models.Server
     form_class = forms.ServerMembersForm

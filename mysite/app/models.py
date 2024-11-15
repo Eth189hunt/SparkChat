@@ -10,6 +10,7 @@ class Server(models.Model):
     name = models.CharField(max_length=255)
     icon = models.FileField()
     created_at = models.DateTimeField(auto_now_add=True)
+    invite_link = models.CharField(max_length=65, null=True, blank=True)
 
 
 class Channel(models.Model):

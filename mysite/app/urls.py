@@ -38,4 +38,9 @@ urlpatterns = [
         views.DirectMessageCreateView.as_view(),
         name="direct-message",
     ),
+    path(
+        "server/<int:server_pk>/settings",
+        views.ServerSettings.as_view(),
+        name="serverSettings",
+    )
 ]

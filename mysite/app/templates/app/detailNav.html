@@ -3,7 +3,7 @@
 
         {% if current_server %}
             <div class="d-flex flex-column justify-content-center">
-                <a href="{% url 'app:server-detail' current_server.id %}" class="">{{ current_server.name }}</a>
+                <a href="{% url 'app:serverSettings' current_server.id %}" class="">{{ current_server.name }}</a>
                 <a href="{% url 'app:channel-create' current_server.id %}" class="">Add Text Chat</a>
 
                 {% for channel in current_server.textchannel_set.all %}

@@ -105,3 +105,13 @@ class FriendRequestUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+
+class ServerSettingsForm(forms.ModelForm):
+    class Meta:
+            model = models.Server
+            fields = ["name", "icon"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False

@@ -1,0 +1,16 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <h4>Server Settings</h4>
+    <div class="container">
+        <form class="form" method="post" enctype="multipart/form-data">
+            {% crispy form %}
+            <div class="form-actions">
+                <input class="btn btn-primary" id="submit" type="submit" value="Update">
+            </div>
+        </form>
+    </div>
+{% endblock %}
