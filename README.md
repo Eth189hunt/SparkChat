@@ -44,3 +44,5 @@ First copy and enter `.env` file.(use `ls -a` to check for it.)
 
 In Djangotemplate file.
 ```sudo sh ./start.sh```
+
+More text
