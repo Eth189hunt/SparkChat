@@ -6,6 +6,8 @@
 {% block content %}
     <h4>Server Settings</h4>
     <div class="container">
+        <p>Invite Link: <a href="http://{{ site }}{% url 'app:server-join' invite_link %}" target="_blank">{{ invite_link }}</a></p>
+        <a href="{% url 'app:server-members' current_server.pk %}">Update Member List</a>
         <form class="form" method="post" enctype="multipart/form-data">
             {% crispy form %}
             <div class="form-actions">
@@ -14,3 +16,4 @@
         </form>
     </div>
 {% endblock %}
+    

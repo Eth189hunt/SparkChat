@@ -1,3 +1,5 @@
+import base64
+
 from django.contrib.auth.models import User
 
 from . import models
@@ -31,3 +33,10 @@ def get_direct_message_channels(user: User):
 
 def server_default_role(server: models.Server):
     return models.Role.objects.create(server=server, default_role=True)
+
+
+def server_id_decode(encoded_id):
+    padding = "=" * (4 - len(encoded_id) % 4)
+    encoded_id_padded = encoded_id + padding
+    string_id = base64.b64decode(encoded_id_padded)
+    return string_id.decode("utf-8")

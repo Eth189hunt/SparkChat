@@ -29,7 +29,9 @@ class ServerEditForm(forms.ModelForm):
 class ServerMembersForm(forms.ModelForm):
     class Meta:
         model = models.Server
-        fields = ["members"]
+        fields = []
+
+    member_id = forms.IntegerField(required=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -106,10 +108,24 @@ class FriendRequestUpdateForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
 
+
+class ServerJoinForm(forms.Form):
+    invite_code = forms.CharField(
+        max_length=255,
+        label="Invite Code",
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["invite_code"].label = ""
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+
 class ServerSettingsForm(forms.ModelForm):
     class Meta:
-            model = models.Server
-            fields = ["name", "icon"]
+        model = models.Server
+        fields = ["name", "icon"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

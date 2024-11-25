@@ -1,3 +1,5 @@
+import base64
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -11,6 +13,12 @@ class Server(models.Model):
     icon = models.FileField()
     created_at = models.DateTimeField(auto_now_add=True)
     invite_link = models.CharField(max_length=65, null=True, blank=True)
+
+    def id_encoded(self):
+        server_id = str(self.id).encode("utf-8")
+        btyes_id = base64.b64encode(server_id)
+        string_encoded_id = btyes_id.decode("utf-8").rstrip("=")
+        return string_encoded_id
 
 
 class Channel(models.Model):

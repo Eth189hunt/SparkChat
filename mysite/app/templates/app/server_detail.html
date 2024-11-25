@@ -4,5 +4,9 @@
 
 
 {% block content %}
-    server
+    {% include 'app/includes/messages.html' %}
+    <h4>{{ current_server.name }}</h4>
+    <div class="container">
+        test
+    </div>
 {% endblock %}

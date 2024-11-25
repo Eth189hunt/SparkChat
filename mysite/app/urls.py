@@ -13,6 +13,11 @@ urlpatterns = [
         name="server-detail",
     ),
     path(
+        "server/join/<str:invite_code>/",
+        views.ServerJoinView.as_view(),
+        name="server-join",
+    ),
+    path(
         "server/<int:server_pk>/channel/create/",
         views.CreateTextChannelView.as_view(),
         name="channel-create",
@@ -39,8 +44,13 @@ urlpatterns = [
         name="direct-message",
     ),
     path(
-        "server/<int:server_pk>/settings",
+        "server/<int:server_pk>/settings/",
         views.ServerSettings.as_view(),
         name="serverSettings",
-    )
+    ),
+    path(
+        "server/<int:server_pk>/members/",
+        views.ServerMembersUpdateView.as_view(),
+        name="server-members",
+    ),
 ]

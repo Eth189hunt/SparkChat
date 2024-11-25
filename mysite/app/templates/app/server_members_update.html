@@ -1,0 +1,35 @@
+{% extends 'app/layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <h4>Member Update List</h4>
+    <div class="container">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <td>Username</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in current_server.members.all %}
+                    <tr>
+                        <td>
+                            {{ member.username }}
+                        </td>
+                        <td>
+                            <form method="post" enctype="multipart/form-data" class="d-flex justify-content-end">
+                                {% csrf_token %}
+                                <input type="number" name="member_id" class="numberinput form-control" hidden required id="id_member_id" value="{{ member.id }}">
+                                <input class="btn btn-danger" type="submit" value="Kick">
+                            </form>
+                        </td>
+                    </tr>        
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+    

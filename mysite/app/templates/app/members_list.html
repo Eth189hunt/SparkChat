@@ -1,0 +1,12 @@
+{% if current_server and not owner %}
+    <div class="col-auto p-5">
+        <h4>Members</h4>
+        <ul class="list-group">
+            {% for member in current_server.members.all %}
+                <li class="list-group{% if member == user %} list-group-item-primary{% endif %}">
+                    {{ member.username }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

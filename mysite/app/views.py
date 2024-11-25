@@ -21,16 +21,25 @@ from . import forms, models, services
 logger = logging.getLogger(__name__)
 
 
-class SeversMixin(LoginRequiredMixin):
+class ServersMixin(LoginRequiredMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if "server_pk" in self.kwargs:
+            server = models.Server.objects.get(pk=self.kwargs["server_pk"])
+            self.server = server
+            if request.user in server.members.all():
+                return super().dispatch(request, *args, **kwargs)
+            if server.owner == request.user:
+                return super().dispatch(request, *args, **kwargs)
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["servers"] = models.Server.objects.filter(
             Q(owner=self.request.user) | Q(members=self.request.user)
         ).distinct()
         if "server_pk" in self.kwargs:
-            context["current_server"] = models.Server.objects.get(
-                pk=self.kwargs["server_pk"]
-            )
+            context["current_server"] = self.server
         else:
             context["channels"] = services.get_direct_message_channels(
                 self.request.user
@@ -38,7 +47,34 @@ class SeversMixin(LoginRequiredMixin):
         return context
 
 
-class IndexView(SeversMixin, TemplateView):
+class ServerMemberMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if "server_pk" in self.kwargs:
+            if request.user in self.server.members.all():
+                return super().dispatch(request, *args, **kwargs)
+            if self.server.owner == request.user:
+                return super().dispatch(request, *args, **kwargs)
+        else:
+            raise Http404
+
+
+class ServerOwnerMixin:
+    def dispatch(self, request, *args, **kwargs):
+        server = models.Server.objects.get(pk=self.kwargs["server_pk"])
+        if server.owner != request.user:
+            raise PermissionError()
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if "server_pk" in self.kwargs:
+            context["owner"] = True
+
+        return context
+
+
+class IndexView(ServersMixin, TemplateView):
     template_name = "app/index.html"
 
     def get_context_data(self, **kwargs):
@@ -49,7 +85,7 @@ class IndexView(SeversMixin, TemplateView):
         return context
 
 
-class ServerCreateView(SeversMixin, CreateView):
+class ServerCreateView(ServersMixin, CreateView):
     model = models.Server
     form_class = forms.ServerCreateForm
     template_name = "app/server_create.html"
@@ -64,7 +100,7 @@ class ServerCreateView(SeversMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class ServerDetailView(SeversMixin, DetailView):
+class ServerDetailView(ServersMixin, ServerMemberMixin, DetailView):
     model = models.Server
     template_name = "app/server_detail.html"
     pk_url_kwarg = "server_pk"
@@ -76,25 +112,78 @@ class ServerDetailView(SeversMixin, DetailView):
         return context
 
 
-class ServerSettings(SeversMixin, UpdateView):
+class ServerJoinView(LoginRequiredMixin, FormView):
+    form_class = forms.ServerJoinForm
+    template_name = "app/server_join.html"
+    pk_url_kwarg = "server_pk"
+
+    def dispatch(self, request, *args, **kwargs):
+        # Get decode id from url
+        try:
+            encoded_id = self.kwargs["invite_code"]
+            server_id = services.server_id_decode(encoded_id)
+            server = models.Server.objects.get(pk=server_id)
+            self.object = server
+        except models.Server.DoesNotExist:
+            return Http404
+
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["object"] = self.object
+
+        return context
+
+    def get_initial(self):
+        return {"invite_code": self.kwargs["invite_code"]}
+
+    def form_valid(self, form):
+        if self.request.user not in self.object.members.all():
+            messages.success(self.request, "You have joined the server.")
+            self.object.members.add(self.request.user)
+        else:
+            messages.success(self.request, "You are already a member.")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("app:server-detail", kwargs={"server_pk": self.object.pk})
+
+
+class ServerSettings(ServersMixin, ServerOwnerMixin, UpdateView):
     model = models.Server
     form_class = forms.ServerSettingsForm
     template_name = "app/serverSettings.html"
     pk_url_kwarg = "server_pk"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-class ServerMembersUpdateView(SeversMixin, UpdateView):
+        id_encodeed = self.object.id_encoded()
+        context["invite_link"] = id_encodeed
+        context["site"] = self.request.get_host()
+
+        return context
+
+
+class ServerMembersUpdateView(ServersMixin, ServerOwnerMixin, UpdateView):
     model = models.Server
     form_class = forms.ServerMembersForm
     template_name = "app/server_members_update.html"
     pk_url_kwarg = "server_pk"
 
+    def get_success_url(self):
+        return reverse_lazy("app:server-members", kwargs={"server_pk": self.object.pk})
+
     def form_valid(self, form):
-        form.instance.members.set(form.cleaned_data["members"])
+        # Use member id to remove
+        member = User.objects.get(pk=form.cleaned_data["member_id"])
+        self.object.members.remove(member)
         return super().form_valid(form)
 
 
-class ServerUpdateView(SeversMixin, UpdateView):
+class ServerUpdateView(ServersMixin, UpdateView):
     """
     This will allow for server name and icon update.
     """
@@ -109,7 +198,7 @@ class ServerUpdateView(SeversMixin, UpdateView):
         return context
 
 
-class ServerRoleUpdateView(SeversMixin, UpdateView):
+class ServerRoleUpdateView(ServersMixin, UpdateView):
     model = models.Role
     form_class = forms.RoleForm
     template_name = "app/role_update.html"
@@ -121,11 +210,11 @@ class ServerRoleUpdateView(SeversMixin, UpdateView):
         )
 
 
-class CreateTextChannelView(SeversMixin, CreateView):
+class CreateTextChannelView(ServersMixin, ServerOwnerMixin, CreateView):
     model = models.TextChannel
     form_class = forms.TextChannelCreateForm
     template_name = "app/textchannel_create.html"
-    pk_url_kwarg = "textchannel_pk"
+    pk_url_kwarg = "server_pk"
 
     def get_success_url(self):
         return reverse_lazy(
@@ -141,7 +230,7 @@ class CreateTextChannelView(SeversMixin, CreateView):
         return super().form_valid(form)
 
 
-class TextChannelMessageCreateView(SeversMixin, CreateView):
+class TextChannelMessageCreateView(ServersMixin, ServerMemberMixin, CreateView):
     model = models.TextChannel
     form_class = forms.TextChannelMessageForm
     template_name = "app/textchannel_detail.html"
@@ -189,7 +278,7 @@ class TextChannelMessageCreateView(SeversMixin, CreateView):
         )
 
 
-class FriendRequestListView(SeversMixin, ListView):
+class FriendRequestListView(ServersMixin, ListView):
     model = models.FriendRequest
     template_name = "app/friend_request_list.html"
 
@@ -199,7 +288,7 @@ class FriendRequestListView(SeversMixin, ListView):
         )
 
 
-class FriendRequestUpdateView(SeversMixin, UpdateView):
+class FriendRequestUpdateView(ServersMixin, UpdateView):
     model = models.FriendRequest
     form_class = forms.FriendRequestUpdateForm
     template_name = "app/friend_request_update.html"
@@ -225,7 +314,7 @@ class FriendRequestUpdateView(SeversMixin, UpdateView):
         return super().form_valid(form)
 
 
-class FriendRequestCreateView(SeversMixin, FormView):
+class FriendRequestCreateView(ServersMixin, FormView):
     form_class = forms.FriendRequestCreateForm
     template_name = "app/friend_request_create.html"
     success_url = reverse_lazy("app:friend-requests")
@@ -262,7 +351,7 @@ class FriendRequestCreateView(SeversMixin, FormView):
         return super().form_valid(form)
 
 
-class DirectMessageCreateView(SeversMixin, CreateView):
+class DirectMessageCreateView(ServersMixin, CreateView):
     model = models.DirectMessage
     form_class = forms.DirectMessageCreateForm
     template_name = "app/direct_message_create.html"
