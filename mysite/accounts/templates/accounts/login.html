@@ -3,11 +3,13 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form class="form" method="post">
-        {% crispy form %}
-        <div class="form-actions">
-            <input class="" id="submit" type="submit" value="Login">
-            <a href="{% url 'accounts:register' %}">Don't have an Account, Register</a>
-        </div>
-    </form>
+    <div class="container">
+        <form class="form" method="post">
+            {% crispy form %}
+            <div class="form-actions">
+                <input class="btn btn-primary" id="submit" type="submit" value="Login">
+                <a href="{% url 'accounts:register' %}" class="btn btn-secondary">Don't have an Account, Register</a>
+            </div>
+        </form>
+    </div>
 {% endblock %}

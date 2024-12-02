@@ -1,0 +1,64 @@
+body {
+    background-color: #525b63 !important;
+    color: white;
+}
+
+.bg-secondary {
+    background-color: #525b63 !important;
+}
+
+.bg-light{
+    background-color: #8c98a3 !important;
+}
+
+.bg-light-detail{
+    background-color: #6c757d !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+.form-text {
+    color: white;
+}
+
+.link-server {
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    background-color: #34383c;
+    border-radius: 1.5rem;
+    cursor: pointer;
+}
+
+.link-server:hover {
+    background-color: #0d6dfd !important;
+}
+
+.link-user {
+    color: white;
+}
+
+.link-user:hover {
+    color: #0d6dfd !important;
+}
+
+.link-detail-active {
+    background-color: #b1bbc4 !important;
+}
+
+.link-detail-active:hover {
+    opacity: 0.8;
+}
+
+.link-detail {
+    padding: 0.25rem;
+    border-radius: 6px;
+    color: white;
+}
+
+.link-detail:hover {
+    background-color: #666666 !important;
+    opacity: 0.4;
+}

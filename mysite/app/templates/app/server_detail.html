@@ -4,9 +4,11 @@
 
 
 {% block content %}
+    <div class="row bg-secondary p-2">
+        <h4>{{ current_server.name }}</h4>
+    </div>
     {% include 'app/includes/messages.html' %}
-    <h4>{{ current_server.name }}</h4>
-    <div class="container">
+    <div class="container mt-1">
         test
     </div>
 {% endblock %}

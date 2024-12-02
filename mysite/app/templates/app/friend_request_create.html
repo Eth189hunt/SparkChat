@@ -4,10 +4,10 @@
 
 
 {% block content %}
-<div class="header row">
-    <div class="col-auto">Friends</div>
-    <div class="col-auto"><a href="{% url 'app:index' %}">All</a></div>
-    <div class="col-auto"><a href="{% url 'app:friend-requests' %}">Pending</a></div>
+<div class="header row bg-secondary align-items-center p-2 mb-2">
+    <div class="col-auto" style="color: white;">Friends</div>
+    <div class="col-auto"><a href="{% url 'app:index' %}" class="link-detail">All</a></div>
+    <div class="col-auto"><a href="{% url 'app:friend-requests' %}" class="link-detail">Pending</a></div>
     <div class="col-auto"><a href="{% url 'app:friend-request-create' %}" class="btn btn-success">Add Friend</a></div>
 </div>
 {% include 'app/includes/messages.html' %}

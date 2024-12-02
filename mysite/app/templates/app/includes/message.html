@@ -1,7 +1,9 @@
 <div class="col-auto">
-    <div class="flex-container" >
-        <div style="flex-grow: 1;"><span class="dot"></span>{{ message.author.username }}</div>
-        <div style="font-size: 16px; flex-grow: 1;">{{ message.created_at_str }}</div>
+    <div class="flex-container pb-3">
+        <div class="d-flex flex-row" style="gap: 10px;">
+          <h5>{{ message.author.username }}</h5>
+          <div class="" style="font-size: 16px;">{{ message.created_at_str }}</div>
+        </div>
         <div style="flex-grow: 8;">{{ message.content }}</div>
       </div>
 </div>
