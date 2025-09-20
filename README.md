@@ -1,8 +1,5 @@
-# Django template
-A template for Django with React.
-
-Includes pages for registration and login.
-/account/login
+# Sparkchat
+This was a simple project to practice software engineering principles on. Part of college class assignment.
 
 # Run on see on your computer
 
